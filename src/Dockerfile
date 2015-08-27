@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		gcc-arm-none-eabi \
 		binutils-arm-none-eabi \
 		libnewlib-arm-none-eabi \
-		zip unzip\
+		zip unzip \
+		sdcc libftdi-dev \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN pip install flake8

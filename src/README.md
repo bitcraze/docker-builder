@@ -5,7 +5,8 @@ and is used by our build tools/servers. The intention is to reduce problems
 with installation of compilers and tools, and to simplify building. If a build
 with the image passes on one machine it should also pass on another.
 
-The image currently supports python and firmware (C) modules.
+The image currently supports python, firmware (C) for the Crazyflie and
+Crazyradio.
 
 # Usage
 
