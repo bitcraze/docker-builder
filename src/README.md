@@ -5,12 +5,14 @@ and is used by our build tools/servers. The intention is to reduce problems
 with installation of compilers and tools, and to simplify building. If a build
 with the image passes on one machine it should also pass on another.
 
-The image currently supports python, firmware (C) for the Crazyflie and
-Crazyradio.
+The image currently supports python and compilers for Crazyflie and Crazyradio 
+firmware.
 
 # Usage
 
-You can call make:
+## Building
+
+You can call make
 
     docker run --rm -v ${PWD}:/module bitcraze/builder make
 
@@ -21,11 +23,13 @@ Or make with any arguments, clean for instance
 
     docker run --rm -v ${PWD}:/module bitcraze/builder make clean
 
-Scripts can be called:
+Scripts can be called
 
     docker run --rm -v ${PWD}:/module bitcraze/builder tools/build/build.sh
 
-The default directory for the image is volume
+## Image structure 
+
+The default directory for the image is /module
 
     docker run --rm bitcraze/builder pwd
 
@@ -33,12 +37,14 @@ will print
 
     /module
 
-To use a container interactively:
+## Interactive use
+
+To use a container interactively with your current directory as a volume at 
+/module
 
     docker run --rm -it -v ${PWD}:/module bitcraze/builder bash
 
-
-## Limtations
+# Limtations
 
 1. On OS X and Windows, where the docker host is a virtual machine, the source
 code you want to build must be located under /User (OS X) and c:\Users
