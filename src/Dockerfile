@@ -14,4 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip install flake8
 RUN pip3 install flake8
 
+RUN pip install pyusb==1.0.0b2
+RUN pip3 install pyusb==1.0.0b2
+
 WORKDIR /module
