@@ -12,6 +12,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		rake \
 	&& rm -rf /var/lib/apt/lists/*
 
+RUN curl -sSL https://get.docker.com/ | sh
+
 RUN pip install flake8
 RUN pip3 install flake8
 
