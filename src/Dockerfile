@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		libnewlib-arm-none-eabi \
 		zip unzip \
 		sdcc libftdi-dev \
-		python python-pip python3 python3-pip \
+		python python-pip python-wheel \
+		python3 python3-pip python3-wheel \
 		rake \
 	&& rm -rf /var/lib/apt/lists/*
 
