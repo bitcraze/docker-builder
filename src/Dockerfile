@@ -4,8 +4,10 @@ MAINTAINER Kristoffer Richardsson <kristoffer@bitcraze.io>
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		gcc-arm-none-eabi \
+		gdb-arm-none-eabi \
 		binutils-arm-none-eabi \
 		libnewlib-arm-none-eabi \
+		telnet \
 		zip unzip \
 		sdcc libftdi-dev \
 		python python-pip python-wheel python-dev \
