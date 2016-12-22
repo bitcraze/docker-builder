@@ -20,7 +20,7 @@ RUN curl -fsSLO https://launchpad.net/gcc-arm-embedded/5.0/5-2016-q2-update/+dow
 ENV DOCKER_VERSION 1.12.0
 RUN curl -fsSLO https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz && tar --strip-components=1 -xvzf docker-1.12.0.tgz -C /usr/local/bin
 
-RUN pip install flake8 pyusb==1.0.0b2
+RUN pip2 install flake8 pyusb==1.0.0b2 mock
 RUN pip3 install flake8 pyusb==1.0.0b2
 
 RUN pip3 install pre-commit
