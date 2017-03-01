@@ -18,12 +18,11 @@ RUN curl -fsSLO https://launchpad.net/gcc-arm-embedded/5.0/5-2016-q2-update/+dow
     && tar --strip-components=1 -xvjf gcc-arm-none-eabi-5_4-2016q2-20160622-linux.tar.bz2 -C /usr/local/
 
 ENV DOCKER_VERSION 1.12.0
-RUN curl -fsSLO https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz && tar --strip-components=1 -xvzf docker-1.12.0.tgz -C /usr/local/bin
+RUN curl -fsSLO https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz && tar --strip-components=1 -xvzf docker-${DOCKER_VERSION}.tgz -C /usr/local/bin
 
-RUN pip2 install flake8 pyusb==1.0.0b2 mock
-RUN pip3 install flake8 pyusb==1.0.0b2
+RUN pip2 install flake8 pyusb==1.0.0b2 mock pyserial
+RUN pip3 install flake8 pyusb==1.0.0b2 mock pyserial pre-commit tox
 
-RUN pip3 install pre-commit
 # Make pre-commit donwload and prepare all tools
 ADD .pre-commit-config.yaml /dummy/.pre-commit-config.yaml
 RUN cd /dummy && git init && pre-commit run && cd && rm -rf /dummy
