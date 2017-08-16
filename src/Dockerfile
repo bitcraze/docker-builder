@@ -27,4 +27,9 @@ RUN pip3 install flake8 pyusb==1.0.0b2 mock pyserial pre-commit tox
 ADD .pre-commit-config.yaml /dummy/.pre-commit-config.yaml
 RUN cd /dummy && git init && pre-commit run && cd && rm -rf /dummy
 
+# /module is used for releases when we check out code in the toolbelt container
+# It is passed on to the builder with --volumes-from
+# Make sure it is accessible for all users
+RUN mkdir /module && chmod 777 /module
+
 WORKDIR /module
