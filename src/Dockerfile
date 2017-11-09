@@ -23,9 +23,14 @@ RUN curl -fsSLO https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSI
 RUN pip2 install flake8 pyusb==1.0.0b2 mock pyserial
 RUN pip3 install flake8 pyusb==1.0.0b2 mock pyserial pre-commit tox
 
-# Make pre-commit donwload and prepare all tools
+# Make pre-commit download and prepare all tools
 ADD .pre-commit-config.yaml /dummy/.pre-commit-config.yaml
 RUN cd /dummy && git init && pre-commit run && cd && rm -rf /dummy
+
+# When running on linux with a non root user, there is no HOME directory why it
+# defaults to /. To make the behaviour uniform for all users the toolbels sets
+# HOME to /root for all users but we have to make it read and writeable for everyone
+RUN chmod -R 777 /root
 
 # /module is used for releases when we check out code in the toolbelt container
 # It is passed on to the builder with --volumes-from
