@@ -1,4 +1,4 @@
-FROM buildpack-deps:jessie
+FROM buildpack-deps:stretch
 
 MAINTAINER Kristoffer Richardsson <kristoffer@bitcraze.io>
 
@@ -8,8 +8,8 @@ RUN dpkg --add-architecture i386 && apt-get update \
 		libncurses5:i386 \
 		zip unzip \
 		sdcc libftdi-dev \
-		python python-pip python-wheel python-dev \
-		python3 python3-pip python3-wheel python3-dev \
+		python python-pip python-wheel python-dev python-setuptools\
+		python3 python3-pip python3-wheel python3-dev python3-setuptools\
 		rake \
 		python-numpy python-scipy python3-numpy python3-scipy \
 	&& rm -rf /var/lib/apt/lists/*
