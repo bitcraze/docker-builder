@@ -14,8 +14,8 @@ RUN dpkg --add-architecture i386 && apt-get update \
 		python-numpy python-scipy python3-numpy python3-scipy \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN curl -fsSLO https://launchpad.net/gcc-arm-embedded/5.0/5-2016-q2-update/+download/gcc-arm-none-eabi-5_4-2016q2-20160622-linux.tar.bz2 \
-    && tar --strip-components=1 -xvjf gcc-arm-none-eabi-5_4-2016q2-20160622-linux.tar.bz2 -C /usr/local/
+RUN curl -fsSLO https://developer.arm.com/-/media/Files/downloads/gnu-rm/7-2017q4/gcc-arm-none-eabi-7-2017-q4-major-linux.tar.bz2 \
+    && tar --strip-components=1 -xvjf gcc-arm-none-eabi-7-2017-q4-major-linux.tar.bz2 -C /usr/local/
 
 ENV DOCKER_VERSION 1.12.0
 RUN curl -fsSLO https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz && tar --strip-components=1 -xvzf docker-${DOCKER_VERSION}.tgz -C /usr/local/bin
