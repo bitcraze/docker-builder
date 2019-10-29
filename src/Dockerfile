@@ -1,4 +1,4 @@
-FROM buildpack-deps:stretch
+FROM buildpack-deps:buster
 
 MAINTAINER Kristoffer Richardsson <kristoffer@bitcraze.io>
 
@@ -14,11 +14,11 @@ RUN dpkg --add-architecture i386 && apt-get update \
 		python-numpy python-scipy python3-numpy python3-scipy \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN curl -fsSLO https://launchpad.net/gcc-arm-embedded/5.0/5-2016-q2-update/+download/gcc-arm-none-eabi-5_4-2016q2-20160622-linux.tar.bz2 \
-    && tar --strip-components=1 -xvjf gcc-arm-none-eabi-5_4-2016q2-20160622-linux.tar.bz2 -C /usr/local/
+RUN curl -fsSLO https://developer.arm.com/-/media/Files/downloads/gnu-rm/8-2019q3/RC1.1/gcc-arm-none-eabi-8-2019-q3-update-linux.tar.bz2 \
+    && tar --strip-components=1 -xvjf gcc-arm-none-eabi-8-2019-q3-update-linux.tar.bz2 -C /usr/local/
 
-ENV DOCKER_VERSION 1.12.0
-RUN curl -fsSLO https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz && tar --strip-components=1 -xvzf docker-${DOCKER_VERSION}.tgz -C /usr/local/bin
+ENV DOCKER_VERSION 19.03.1
+RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz && tar --strip-components=1 -xvzf docker-${DOCKER_VERSION}.tgz -C /usr/local/bin
 
 # When running on linux with a non root user, there is no HOME directory why it
 # defaults to /. To make the behaviour uniform for all users create a new HOME
