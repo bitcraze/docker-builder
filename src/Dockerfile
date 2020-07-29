@@ -8,7 +8,6 @@ RUN dpkg --add-architecture i386 && apt-get update \
 		libncurses5:i386 \
 		zip unzip \
 		sdcc libftdi-dev \
-		python python-pip python-wheel python-dev python-setuptools\
 		python3 python3-pip python3-wheel python3-dev python3-setuptools\
 		rake \
 		python-numpy python-scipy python3-numpy python3-scipy \
@@ -26,7 +25,6 @@ RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${
 RUN mkdir /new_home
 ENV HOME=/new_home
 
-RUN pip2 install flake8 pyusb==1.0.0b2 mock pyserial
 RUN pip3 install flake8 pyusb==1.0.0b2 mock pyserial pre-commit tox
 
 # Make pre-commit download and prepare all tools
