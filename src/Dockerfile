@@ -25,7 +25,7 @@ RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${
 RUN mkdir /new_home
 ENV HOME=/new_home
 
-RUN pip3 install flake8 pyusb==1.0.0b2 mock pyserial pre-commit tox
+RUN pip3 install flake8 pyusb==1.0.0b2 mock pyserial pre-commit tox opencv-python==4.5.1.48 -vvv
 
 # Make pre-commit download and prepare all tools for python testing
 ADD .pre-commit-config.yaml /dummy/.pre-commit-config.yaml
