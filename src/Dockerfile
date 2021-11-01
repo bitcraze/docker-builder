@@ -11,6 +11,7 @@ RUN dpkg --add-architecture i386 && apt-get update \
 		python3 python3-pip python3-wheel python3-dev python3-setuptools\
 		rake \
 		python3-numpy python3-scipy \
+		swig \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSLO https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2020q2/gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2 \
