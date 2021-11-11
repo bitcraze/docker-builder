@@ -33,7 +33,7 @@ ENV HOME=/new_home
 # Upgrade pip to avoid need for wheel compiliation
 RUN pip3 install --upgrade pip
 
-RUN pip3 install flake8==3.8.4 pyusb==1.0.0b2 mock pyserial pre-commit tox opencv-python==4.5.1.48 pyelftools -vvv
+RUN pip3 install flake8==3.8.4 pyusb==1.0.0b2 mock pyserial pre-commit tox opencv-python==4.5.1.48 pyelftools pytest
 
 # Make pre-commit download and prepare all tools for python testing
 ADD .pre-commit-config.yaml /dummy/.pre-commit-config.yaml
