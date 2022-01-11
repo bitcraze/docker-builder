@@ -10,6 +10,18 @@ See src/README.md for more information.
 The image is built automatically by Docker hub, see
 https://hub.docker.com/r/bitcraze/builder/
 
+## Manual build
+
+If the image can not be built automatically follow this procedure:
+1. Buid a local image for test: `docker build -t my_builder ./src`
+1. Test the image
+1. Commit, tag and push to github
+1. Make sure your work space is clean and build the production image: `docker build -t bitcraze/builder ./src`. If you have not changed anything this should be very fast.
+1. Build a tagged (the tag in this case is 4711) version: `docker build -t bitcraze/builder:4711 ./src` (should also be very fast)
+1. Push the tagged version to docker hub: `docker push bitcraze/builder:4711`
+1. Push the 'latest' version to docker hub: `docker push bitcraze/builder`
+
+
 ## Docker
 
 On information on how to install and use docker, please go to
