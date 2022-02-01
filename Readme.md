@@ -5,15 +5,17 @@ that is used to build Bitcraze projects.
 
 See src/README.md for more information.
 
-## Building the image
+## Building and releasing the image
 
-The image is built automatically by Docker hub, see
-https://hub.docker.com/r/bitcraze/builder/
+To build the image and push it to docker hub:
+1. Create a tag
+2. Go to the [`Release and push to docker hub`](https://github.com/bitcraze/docker-builder/actions/workflows/release.yml) workflow in actions for the repository on github
+3. Chose the tag and start the workflow
 
 ## Manual build
 
 If the image can not be built automatically follow this procedure:
-1. Buid a local image for test: `docker build -t my_builder ./src`
+1. Build a local image for test: `docker build -t my_builder ./src`
 1. Test the image
 1. Commit, tag and push to github
 1. Make sure your work space is clean and build the production image: `docker build -t bitcraze/builder ./src`. If you have not changed anything this should be very fast.
