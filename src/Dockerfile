@@ -1,4 +1,4 @@
-FROM buildpack-deps:buster
+FROM buildpack-deps:22.04
 
 LABEL maintainer="Kristoffer Richardsson <kristoffer@bitcraze.io>"
 
@@ -9,8 +9,7 @@ RUN dpkg --add-architecture i386 && apt-get update \
 		libusb-1.0-0 \
 		zip unzip \
 		sdcc libftdi-dev \
-		python3 python3-pip python3-wheel python3-dev python3-setuptools\
-		python-pip python-setuptools \
+		python3-pip python3-wheel python3-dev python3-setuptools python-is-python3 \
 		rake \
 		swig \
 		flex bison gperf \
@@ -42,19 +41,18 @@ RUN cd /dummy && git init && pre-commit run && cd && rm -rf /dummy
 # the build scripts need to know where to find it
 RUN mkdir -p /new_home/esp
 
-# First we setup the esp32 toolchain and add it to PATH
-RUN curl -fsSLO https://dl.espressif.com/dl/xtensa-esp32-elf-linux64-1.22.0-97-gc752ad5-5.2.0.tar.gz \
-	&& tar -xzf xtensa-esp32-elf-linux64-1.22.0-97-gc752ad5-5.2.0.tar.gz -C /new_home/esp
-ENV PATH=$PATH:/new_home/esp/xtensa-esp32-elf/bin
-
-# ... as well as openocd for esp32
-RUN curl -fsSLO https://github.com/espressif/openocd-esp32/releases/download/v0.10.0-esp32-20210902/openocd-esp32-linux64-0.10.0-esp32-20210902.tar.gz \
-	&& tar -xzf openocd-esp32-linux64-0.10.0-esp32-20210902.tar.gz -C /new_home/esp
-
-RUN cd /new_home/esp && git clone -b release/v3.3 --recursive https://github.com/espressif/esp-idf.git
-RUN cd /new_home/esp/esp-idf && python2.7 -m pip install --user -r requirements.txt
-RUN cd /new_home/esp/esp-idf && ./install.sh esp32
+RUN cd /new_home/esp && git clone --depth 1 --branch v4.3.1 --recursive https://github.com/espressif/esp-idf.git
+# install.sh does not exactly do what we want. Running parts of it...
+RUN cd /new_home/esp/esp-idf && python3 ./tools/idf_tools.py install
 ENV IDF_PATH=/new_home/esp/esp-idf
+RUN cd /new_home/esp/esp-idf && pip3 install -r requirements.txt
+# The export.sh script can not be sourced in docker, set it up manually
+ENV PATH=/new_home/esp/esp-idf/components/esptool_py/esptool:/new_home/esp/esp-idf/components/espcoredump:/new_home/esp/esp-idf/components/partition_table:\
+/new_home/esp/esp-idf/components/app_update:/new_home/.espressif/tools/xtensa-esp32-elf/esp-2021r1-8.4.0/xtensa-esp32-elf/bin:\
+/new_home/.espressif/tools/xtensa-esp32s2-elf/esp-2021r1-8.4.0/xtensa-esp32s2-elf/bin:/new_home/.espressif/tools/xtensa-esp32s3-elf/esp-2021r1-8.4.0/xtensa-esp32s3-elf/bin:\
+/new_home/.espressif/tools/riscv32-esp-elf/esp-2021r1-8.4.0/riscv32-esp-elf/bin:/new_home/.espressif/tools/esp32ulp-elf/2.28.51-esp-20191205/esp32ulp-elf-binutils/bin:\
+/new_home/.espressif/tools/esp32s2ulp-elf/2.28.51-esp-20191205/esp32s2ulp-elf-binutils/bin:/new_home/.espressif/tools/openocd-esp32/v0.10.0-esp32-20210401/openocd-esp32/bin:\
+/new_home/esp/esp-idf/tools:$PATH
 
 # Set the locale to make ruby open text files as UTF-8 default
 # (Encoding.default_external). Required to make html-proofer handle UTF-8.
