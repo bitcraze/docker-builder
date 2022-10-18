@@ -14,10 +14,16 @@ RUN dpkg --add-architecture i386 && apt-get update \
 		swig \
 		flex bison gperf \
 		python3-opencv \
+		binutils-arm-none-eabi \
+		gcc-arm-none-eabi \
+		libnewlib-arm-none-eabi \
+		picolibc-arm-none-eabi \
+		cmake \
+		ninja-build \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN curl -fsSLO https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2020q2/gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2 \
-    && tar --strip-components=1 -xvjf gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2 -C /usr/local/
+# Required environment for Zephyr to find the right libc
+ENV SYSROOT_DIR /usr/lib/arm-none-eabi/newlib/
 
 ENV DOCKER_VERSION 19.03.1
 RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz && tar --strip-components=1 -xvzf docker-${DOCKER_VERSION}.tgz -C /usr/local/bin
@@ -31,7 +37,7 @@ ENV HOME=/new_home
 # Upgrade pip to avoid need for wheel compiliation
 RUN pip3 install --upgrade pip
 
-RUN pip3 install numpy==1.20.2 scipy==1.7.1 flake8==3.8.4 pyusb==1.0.0b2 libusb-package==1.0.24.2 mock pyserial pre-commit tox opencv-python==4.5.1.48 pyelftools pytest
+RUN pip3 install scipy==1.9.2 flake8==3.8.4 pyusb==1.0.0b2 libusb-package==1.0.24.2 mock pyserial pre-commit tox pyelftools pytest west
 
 # Make pre-commit download and prepare all tools for python testing
 ADD .pre-commit-config.yaml /dummy/.pre-commit-config.yaml
@@ -62,5 +68,9 @@ ENV LANG C.UTF-8
 # It is passed on to the builder with --volumes-from
 # Make sure it is accessible for all users
 RUN mkdir /module && chmod 777 /module && chmod -R 777 /new_home
+
+# New version of git are more strict about the permissions of the project directory
+# Disable this check
+RUN git config --global --add safe.directory '*'
 
 WORKDIR /module
