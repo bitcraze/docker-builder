@@ -18,6 +18,8 @@ RUN dpkg --add-architecture i386 && apt-get update \
 		gcc-arm-none-eabi \
 		libnewlib-arm-none-eabi \
 		picolibc-arm-none-eabi \
+		libstdc++-arm-none-eabi-newlib \
+		libstdc++-arm-none-eabi-dev \
 		cmake \
 		ninja-build \
 	&& rm -rf /var/lib/apt/lists/*
