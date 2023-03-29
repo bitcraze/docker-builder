@@ -1,3 +1,4 @@
+repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: 0b70e285e369bcb24b57b74929490ea7be9c4b19
     hooks:
