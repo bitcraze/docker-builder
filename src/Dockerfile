@@ -45,6 +45,11 @@ RUN pip3 install scipy==1.9.2 flake8==3.8.4 pyusb==1.0.0b2 libusb-package==1.0.2
 ADD .pre-commit-config.yaml /dummy/.pre-commit-config.yaml
 RUN cd /dummy && git init && pre-commit run && cd && rm -rf /dummy
 
+# Install Zephyr SDK for arm
+ENV ZEPHYR_SDK_VERSION=0.16.0
+RUN curl -L https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZEPHYR_SDK_VERSION}/zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64_minimal.tar.xz | tar xJ -C  /opt
+RUN curl -L https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZEPHYR_SDK_VERSION}/toolchain_linux-x86_64_arm-zephyr-eabi.tar.xz | tar xJ -C /opt/zephyr-sdk-${ZEPHYR_SDK_VERSION}/
+
 # In order to build ESP-32 based projects we need the Espressif SDK and
 # the build scripts need to know where to find it
 RUN mkdir -p /new_home/esp
