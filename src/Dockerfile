@@ -39,7 +39,7 @@ ENV HOME=/new_home
 # Upgrade pip to avoid need for wheel compiliation
 RUN pip3 install --upgrade pip
 
-RUN pip3 install scipy==1.9.2 flake8==3.8.4 pyusb==1.0.0b2 libusb-package==1.0.24.2 mock pyserial pre-commit tox pyelftools pytest west
+RUN pip3 install scipy==1.9.2 flake8==3.8.4 pyusb==1.0.0b2 libusb-package==1.0.24.2 mock pyserial pre-commit tox pyelftools pytest west build
 
 # Make pre-commit download and prepare all tools for python testing
 ADD .pre-commit-config.yaml /dummy/.pre-commit-config.yaml
