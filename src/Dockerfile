@@ -1,6 +1,6 @@
 FROM buildpack-deps:22.04
 
-LABEL maintainer="Kristoffer Richardsson <kristoffer@bitcraze.io>"
+LABEL maintainer="Bitcraze AB <contact@bitcraze.io>"
 
 RUN dpkg --add-architecture i386 && apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -27,7 +27,7 @@ RUN dpkg --add-architecture i386 && apt-get update \
 # Required environment for Zephyr to find the right libc
 ENV SYSROOT_DIR /usr/lib/arm-none-eabi/newlib/
 
-ENV DOCKER_VERSION 19.03.1
+ENV DOCKER_VERSION 27.3.1
 RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz && tar --strip-components=1 -xvzf docker-${DOCKER_VERSION}.tgz -C /usr/local/bin
 
 # When running on linux with a non root user, there is no HOME directory why it
@@ -58,7 +58,7 @@ RUN cd /new_home/esp && git clone --depth 1 --branch v4.3.1 --recursive https://
 # install.sh does not exactly do what we want. Running parts of it...
 RUN cd /new_home/esp/esp-idf && python3 ./tools/idf_tools.py install
 ENV IDF_PATH=/new_home/esp/esp-idf
-RUN cd /new_home/esp/esp-idf && pip3 install -r requirements.txt
+RUN cd /new_home/esp/esp-idf && python3 ./tools/idf_tools.py install-python-env
 # The export.sh script can not be sourced in docker, set it up manually
 ENV PATH=/new_home/esp/esp-idf/components/esptool_py/esptool:/new_home/esp/esp-idf/components/espcoredump:/new_home/esp/esp-idf/components/partition_table:\
 /new_home/esp/esp-idf/components/app_update:/new_home/.espressif/tools/xtensa-esp32-elf/esp-2021r1-8.4.0/xtensa-esp32-elf/bin:\
