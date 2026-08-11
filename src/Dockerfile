@@ -36,8 +36,12 @@ RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${
 RUN mkdir /new_home
 ENV HOME=/new_home
 
-# Upgrade pip to avoid need for wheel compiliation
-RUN pip3 install --upgrade pip
+# Ubuntu 22.04's apt versions are too old for many packages.
+# Pinned for reproducibility across all repos using this image.
+RUN pip3 install --upgrade \
+        pip==26.2.1 \
+        setuptools==84.0.0 \
+        wheel==0.47.0
 
 RUN pip3 install scipy==1.9.2 flake8==3.8.4 pyusb==1.0.0b2 libusb-package==1.0.24.2 mock pyserial pre-commit tox pyelftools pytest west build
 
