@@ -32,8 +32,10 @@ RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${
 
 # When running on linux with a non root user, there is no HOME directory why it
 # defaults to /. To make the behaviour uniform for all users create a new HOME
-# for all users. We also have to make it read and writeable for everyone (done later)
-RUN mkdir /new_home
+# for all users. We also have to make it read and writeable for everyone, which
+# each RUN that writes to /new_home does by calling make-home-writable.
+COPY make-home-writable /usr/local/bin/
+RUN mkdir -m 777 /new_home
 ENV HOME=/new_home
 
 # Ubuntu 22.04's apt versions are too old for many packages.
@@ -41,13 +43,16 @@ ENV HOME=/new_home
 RUN pip3 install --upgrade \
         pip==26.2.1 \
         setuptools==84.0.0 \
-        wheel==0.47.0
+        wheel==0.47.0 \
+    && make-home-writable
 
-RUN pip3 install scipy==1.9.2 flake8==3.8.4 pyusb==1.0.0b2 libusb-package==1.0.24.2 mock pyserial pre-commit tox pyelftools pytest west build
+RUN pip3 install scipy==1.9.2 flake8==3.8.4 pyusb==1.0.0b2 libusb-package==1.0.24.2 mock pyserial pre-commit tox pyelftools pytest west build \
+    && make-home-writable
 
 # Make pre-commit download and prepare all tools for python testing
 ADD .pre-commit-config.yaml /dummy/.pre-commit-config.yaml
-RUN cd /dummy && git init && pre-commit run && cd && rm -rf /dummy
+RUN cd /dummy && git init && pre-commit run && cd && rm -rf /dummy \
+    && make-home-writable
 
 # Install Zephyr SDK for arm
 ENV ZEPHYR_SDK_VERSION=0.16.0
@@ -56,13 +61,16 @@ RUN curl -L https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZE
 
 # In order to build ESP-32 based projects we need the Espressif SDK and
 # the build scripts need to know where to find it
-RUN mkdir -p /new_home/esp
+RUN mkdir -m 777 /new_home/esp
 
-RUN cd /new_home/esp && git clone --depth 1 --branch v4.3.1 --recursive https://github.com/espressif/esp-idf.git
+RUN cd /new_home/esp && git clone --depth 1 --branch v4.3.1 --recursive https://github.com/espressif/esp-idf.git \
+    && make-home-writable
 # install.sh does not exactly do what we want. Running parts of it...
-RUN cd /new_home/esp/esp-idf && python3 ./tools/idf_tools.py install
+RUN cd /new_home/esp/esp-idf && python3 ./tools/idf_tools.py install \
+    && make-home-writable
 ENV IDF_PATH=/new_home/esp/esp-idf
-RUN cd /new_home/esp/esp-idf && python3 ./tools/idf_tools.py install-python-env
+RUN cd /new_home/esp/esp-idf && python3 ./tools/idf_tools.py install-python-env \
+    && make-home-writable
 # The export.sh script can not be sourced in docker, set it up manually
 ENV PATH=/new_home/esp/esp-idf/components/esptool_py/esptool:/new_home/esp/esp-idf/components/espcoredump:/new_home/esp/esp-idf/components/partition_table:\
 /new_home/esp/esp-idf/components/app_update:/new_home/.espressif/tools/xtensa-esp32-elf/esp-2021r1-8.4.0/xtensa-esp32-elf/bin:\
@@ -78,7 +86,7 @@ ENV LANG C.UTF-8
 # /module is used for releases when we check out code in the toolbelt container
 # It is passed on to the builder with --volumes-from
 # Make sure it is accessible for all users
-RUN mkdir /module && chmod 777 /module && chmod -R 777 /new_home
+RUN mkdir -m 777 /module && make-home-writable
 
 # New version of git are more strict about the permissions of the project directory
 # Disable this check
