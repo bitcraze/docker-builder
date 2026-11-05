@@ -67,6 +67,7 @@ RUN cd /new_home/esp && git clone --depth 1 --branch v4.3.1 --recursive https://
     && make-home-writable
 # install.sh does not exactly do what we want. Running parts of it...
 RUN cd /new_home/esp/esp-idf && python3 ./tools/idf_tools.py install \
+    && rm -rf /new_home/.espressif/dist \
     && make-home-writable
 ENV IDF_PATH=/new_home/esp/esp-idf
 RUN cd /new_home/esp/esp-idf && python3 ./tools/idf_tools.py install-python-env \
