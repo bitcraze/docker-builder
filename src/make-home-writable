@@ -1,0 +1,6 @@
+#!/bin/sh
+# Make everything in /new_home readable and writeable for all users.
+#
+# Only touches files that are not already 777. A plain chmod -R would also touch
+# files from earlier layers, and Docker would store a second copy of each one.
+find /new_home -not -perm 777 -exec chmod 777 {} +
